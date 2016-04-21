@@ -1,5 +1,5 @@
 class GramsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit]
 
   def index
   end
@@ -21,6 +21,13 @@ class GramsController < ApplicationController
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @gram = Gram.find_by_id(params[:id])
+    if @gram.blank?
+      render text: 'Not Found :(', status: :not_found
     end
   end
 
