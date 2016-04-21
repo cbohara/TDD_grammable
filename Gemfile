@@ -7,6 +7,7 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'devise'
 
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.1'
 
@@ -50,6 +51,7 @@ end
 
 group :development, :test do 
   gem 'rspec-rails', '~> 3.0'
+  gem "factory_girl_rails", "~> 4.0"
 end 
 
 
