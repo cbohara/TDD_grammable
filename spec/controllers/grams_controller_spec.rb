@@ -4,29 +4,36 @@ RSpec.describe GramsController, type: :controller do
 
   describe "grams#edit" do
     it "should successfully show the edit form if the gram is found" do
-      p = FactoryGirl.create(:gram)
-      sign_in p.user
+      edit_success = FactoryGirl.create(:gram)
+      sign_in edit_success.user
 
-      get :edit, id: p.id
+      get :edit, id: edit_success.id
       expect(response).to have_http_status(:success)
     end
     
     it "should return a 404 error message if the gram is not found" do
-      get :edit, id: 'SILLY'
+      edit_fail = FactoryGirl.create(:gram)
+      sign_in edit_fail.user
+
+      get :edit, id: 'SWAG'
       expect(response).to have_http_status(:not_found)
     end
   end
 
   describe "grams#show action" do
     it "should successfully show the page if the gram is found" do
-      gram = FactoryGirl.create(:gram)
-      get :show, id: gram.id
+      show_success = FactoryGirl.create(:gram)
+      sign_in show_success.user
+
+      get :show, id: show_success.id
       expect(response).to have_http_status(:success)
     end
     it "should return a 404 error if the gram isn't found" do 
+      show_fail = FactoryGirl.create(:gram)
+      sign_in show_fail.user
+
       get :show, id: 'TACOCAT'
       expect(response).to have_http_status(:not_found)
-
     end
   end
 
