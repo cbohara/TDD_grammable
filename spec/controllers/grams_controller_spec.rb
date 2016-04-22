@@ -2,6 +2,32 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
 
+  describe "grams#update" do
+    it "should allow users to successfully update grams" do
+      update_success = FactoryGirl.create(:gram, message: "initial value")
+
+      patch :update, id: update_success.id, gram: {message: 'changed'}
+      expect(response).to redirect_to root_path
+
+      update_success.reload
+      expect(update_success.message).to eq 'changed'
+    end
+
+    it "should have http 404 error if the grams cannot be found" do
+      patch :update, id: "YOLOSWAG", gram: {message: 'changed'}
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "should render an edit form with http status of unprocessable_entity" do
+      update_fail = FactoryGirl.create(:gram, message: "initial value")
+      patch :update, id: update_fail.id, gram: {message: ' '}
+      expect(response).to have_http_status(:unprocessable_entity)
+
+      update_fail.reload
+      expect(update_fail.message).to eq 'initial value'
+    end
+  end
+
   describe "grams#edit" do
     it "should successfully show the edit form if the gram is found" do
       edit_success = FactoryGirl.create(:gram)
