@@ -70,6 +70,16 @@ RSpec.describe GramsController, type: :controller do
   end
 
   describe "grams#edit" do
+    it "shouldn't let a user who did not create the gram to edit the gram" do
+      edit_access = FactoryGirl.create(:gram)
+      user = FactoryGirl.create(:user)
+      sign_in user
+
+      get :edit, id: edit_access.id
+      expect(response).to have_http_status(:forbidden)
+
+    end
+
     it "shouldn't allow unauthenticated users to edit a gram" do
       edit_auth = FactoryGirl.create(:gram)
       get :edit, id: edit_auth.id
@@ -94,6 +104,15 @@ RSpec.describe GramsController, type: :controller do
   end
 
   describe "grams#update" do
+    it "shouldn't allow users who did not create the gram to update the gram" do
+      update_access = FactoryGirl.create(:gram)
+      user = FactoryGirl.create(:user)
+      sign_in user
+
+      patch :update, id: update_access.id, gram: {message: 'woohoo!'} 
+      expect(response).to have_http_status(:forbidden)
+    end
+
     it "shouldn't allow unauthenticated users to update a gram" do
       update_auth = FactoryGirl.create(:gram)
       patch :update, id: update_auth.id, gram: {message: 'hello'}
@@ -122,7 +141,7 @@ RSpec.describe GramsController, type: :controller do
     it "should render an edit form with http status of unprocessable_entity" do
       update_fail = FactoryGirl.create(:gram, message: "initial value")
       sign_in update_fail.user
-      
+
       patch :update, id: update_fail.id, gram: {message: ' '}
       expect(response).to have_http_status(:unprocessable_entity)
 
@@ -132,6 +151,15 @@ RSpec.describe GramsController, type: :controller do
   end
 
   describe "grams#destroy" do
+    it "shouldn't allow user who did not create the gram to destroy the gram" do
+      destroy_access = FactoryGirl.create(:gram)
+      user = FactoryGirl.create(:user)
+      sign_in user
+
+      delete :destroy, id: destroy_access.id
+      expect(response).to have_http_status(:forbidden)
+    end
+
     it "shouldn't allow unauthenticated users to destroy a gram" do
       destroy_auth = FactoryGirl.create(:gram)
       delete :destroy, id: destroy_auth.id
