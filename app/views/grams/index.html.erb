@@ -15,7 +15,6 @@
       </div>
       <br class="clear-fix" />
       <div class="comments">
-
         <h3>Comments</h3>
         <% gram.comments.each do |comment| %>
           <div class="comment">
@@ -25,10 +24,9 @@
             <p><%= comment.message %></p>
           </div>
         <% end %>
-
-        <h4>Add a comment</h4>
+        <br /><br />
         <%= simple_form_for Comment.new, url: gram_comments_path(gram) do |f| %>
-          <%= f.input :message %>
+          <%= f.input :message, :label => 'Add a comment:' %>
           <%= f.submit 'Add Comment', class: 'my-btn' %>
         <% end %>
       </div>
