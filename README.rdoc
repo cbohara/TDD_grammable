@@ -1,6 +1,6 @@
 == Grammable
 
-Instagram clone
+Instagram clone/n
 Built using Test Driven Development (TDD)
 Using RSpec
 
